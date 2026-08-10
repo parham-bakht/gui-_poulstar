@@ -12,5 +12,19 @@
         "balance": 12.0,
         "password": "12",
         "card_number": "6037997171895926"
+    },
+    {
+        "id": "15",
+        "full name": "new user",
+        "balance": 129120912.0,
+        "password": "123456",
+        "card_number": "6037992323224969"
+    },
+    {
+        "id": "16",
+        "full name": "new user2",
+        "balance": 12913223.0,
+        "password": "123456",
+        "card_number": "6037997303818342"
     }
 ]

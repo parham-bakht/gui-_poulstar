@@ -1,8 +1,12 @@
 from tkinter import *
 import random
 import json
+from tkinter import messagebox
+from jsonhandling import add_new_user
 app = Tk()
 register_page = Toplevel()
+profile_page = Toplevel()
+profile_page.geometry("400x400")
 user_list = []
 def change_window(a,b):
     a.withdraw()
@@ -25,12 +29,25 @@ def createAccount():
         "card_number":base_card
     }
     print(new_account)
-    user_list.append(new_account)
-    with open("account.json","w") as file:
-        json.dump(user_list,file,indent=4)
+    add_new_user(json_file="account.json",new_user=new_account)
+def login():
+    login_id = ent_cardid.get()
+    login_password = ent_password.get()
+    with open("account.json","r") as file:
+        data = json.load(file)
+        for i in data:
+            if i["card_number"] == login_id and i["password"] == login_password:
+                print("login successful✅")
+                messagebox.showinfo("sucess","Login Sucessful")
+                change_window(app,profile_page)
+                return
+        else:
+            messagebox.showerror("ERROR","Card Number or Password is not correct")
+            print("User Not Found❌")
 
 BG_COLOR = "#212121"
 ENT_BG = "#3D3C3C"
+profile_page["bg"] = BG_COLOR
 app["bg"] = BG_COLOR
 lbl_cardid = Label(app,text="Card ID",font=("arial",15),bg=BG_COLOR,fg="white")
 lbl_cardid.pack(pady=10,padx=10)
@@ -42,7 +59,7 @@ lbl_password.pack(pady=10,padx=10)
 ent_password = Entry(app,font=("arial",15),bg=ENT_BG,fg="white")
 ent_password.pack(pady=10,padx=10)
 
-login_btn  = Button(app,text="Login",font=("arial",15),bg="dark blue",fg="white")
+login_btn  = Button(app,text="Login",font=("arial",15),bg="dark blue",fg="white",command=login)
 login_btn.pack(pady=10,padx=10)
 
 register_btn  = Button(app,text="Create Account",font=("arial",15),bg="dark green",fg="white",command=lambda : change_window(app,register_page))
@@ -79,4 +96,5 @@ create_btn.grid(row=4,column=0,padx=10,pady=10)
 signin_btn  = Button(register_page,text="Login",bg="dark blue",fg="white",font=("arial",15),command=lambda: change_window(register_page,app))
 signin_btn.grid(row=4,column=1,padx=10,pady=10)
 register_page.withdraw()
+profile_page.withdraw()
 app.mainloop()
